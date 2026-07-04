@@ -1,6 +1,6 @@
 # Stock Market Analysis Dashboard
 
-A comparative analysis of Apple, Tesla, HBL, and Meezan Bank over a 12-month period, using Python to pull data and calculate metrics, and a static HTML dashboard to visualize the results.
+A comparative analysis of Apple, Tesla, HBL, and Meezan Bank over a 12-month period. Historical market data was prepared using Python, while a standalone HTML dashboard visualizes the results through charts and key performance indicators..
 
 **Live dashboard:** enable GitHub Pages (see below) and the link will be `https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/dashboard.html`
 
@@ -12,11 +12,11 @@ A comparative analysis of Apple, Tesla, HBL, and Meezan Bank over a 12-month per
 | `dashboard.html` | A standalone visual dashboard (charts, KPI cards, insights) — open it in any browser, no installation needed |
 | `stock_dashboard.xlsx` | The Excel output from the last time the script was run |
 
-## ⚠ Important: this is not a live dashboard
+## ⚠ Dashboard Information
 
-The numbers in `dashboard.html` are a **snapshot**, not a live feed. They were pulled once by running `stock_dashboard.py` and are only accurate as of the date shown at the top of the dashboard. Markets move constantly — treat this as a point-in-time analysis, not a real-time tracker.
+The dashboard displays a static snapshot of historical market data. Python was used to prepare the dataset, while the HTML dashboard presents the results. The dashboard does not automatically fetch live market data and must be regenerated manually when updated information is required.
 
-## How to refresh the data
+## Updating the Dashboard
 
 1. Go to [colab.research.google.com](https://colab.research.google.com) → New Notebook
 2. Paste in the contents of `stock_dashboard.py`
@@ -43,7 +43,7 @@ The numbers in `dashboard.html` are a **snapshot**, not a live feed. They were p
 2. Under **Branch**, select `main` and folder `/ (root)`, then click **Save**
 3. Wait about a minute, then refresh — GitHub will show you a link like:
    `https://YOUR-USERNAME.github.io/stock-analysis-dashboard/dashboard.html`
-4. That link is now a live, shareable webpage version of your dashboard (still showing the static snapshot data — see the caution above)
+4. The link is now a shareable webpage displaying the latest generated version of the dashboard. The displayed data remains a static snapshot until the dataset is regenerated.
 
 ## Data & methodology
 
