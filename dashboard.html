@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Market Analysis Dashboard — Apple, Tesla, HBL, Meezan Bank</title>
+<style>
+  :root {
+    --bg: #14151a;
+    --card: #1c1e26;
+    --card-border: #2a2c36;
+    --text-main: #f2f2f5;
+    --text-muted: #9497a6;
+    --green: #34c98f;
+    --blue: #4a9eff;
+    --amber: #f5a623;
+    --violet: #9b7ef0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+    padding: 24px;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  h1 { font-size: 22px; font-weight: 600; margin: 0; }
+  .subtitle { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+  .caution {
+    background: rgba(245, 166, 35, 0.1);
+    border: 1px solid rgba(245, 166, 35, 0.35);
+    color: #f5c877;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .kpi-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 8px; }
+  .kpi-value { font-size: 24px; font-weight: 600; margin: 0; }
+  .kpi-sub { font-size: 13px; margin: 4px 0 0; }
+  .up { color: var(--green); }
+
+  .panel { margin-bottom: 24px; }
+  .panel-title { font-size: 15px; font-weight: 600; margin: 0 0 12px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .chart-box { position: relative; width: 100%; height: 280px; }
+  .chart-box.short { height: 220px; }
+
+  .insights ul { margin: 0; padding-left: 18px; font-size: 14px; color: #d3d4dd; line-height: 1.8; }
+
+  footer {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 24px;
+    border-top: 1px solid var(--card-border);
+    padding-top: 16px;
+    line-height: 1.6;
+  }
+  footer a { color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>Stock Market Analysis Dashboard</h1>
+      <div class="subtitle">Comparative analysis of Apple, Tesla, HBL, and Meezan Bank</div>
+    </div>
+    <div class="subtitle" style="text-align:right;">
+      Period: Jul 2025 &ndash; Jul 2026<br>
+      Data as of: <strong id="dataDate">2 Jul 2026</strong>
+    </div>
+  </header>
+
+  <div class="caution">
+    <strong>⚠ Dashboard information:</strong> this dashboard displays a static snapshot of historical market data prepared using Python and Yahoo Finance. It does not update automatically and should be viewed as a point-in-time analysis, accurate as of the date shown above. To refresh the numbers, re-run <code>stock_dashboard.py</code> and update the data block near the bottom of this file (see README for instructions).
+  </div>
+
+  <div class="kpi-grid">
+    <div class="card">
+      <p class="kpi-label">Top performer</p>
+      <p class="kpi-value">HBL</p>
+      <p class="kpi-sub up">+77.2%</p>
+    </div>
+    <div class="card">
+      <p class="kpi-label">Lowest risk</p>
+      <p class="kpi-value">Apple</p>
+      <p class="kpi-sub" style="color:var(--text-muted);">~24% volatility</p>
+    </div>
+    <div class="card">
+      <p class="kpi-label">Average return</p>
+      <p class="kpi-value">53.7%</p>
+      <p class="kpi-sub" style="color:var(--text-muted);">Across all 4 stocks</p>
+    </div>
+    <div class="card">
+      <p class="kpi-label">Period</p>
+      <p class="kpi-value">12 months</p>
+      <p class="kpi-sub" style="color:var(--text-muted);">Jul 25 &ndash; Jul 26</p>
+    </div>
+  </div>
+
+  <div class="panel card">
+    <p class="panel-title">Cumulative stock performance</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--blue)"></span>Apple</span>
+      <span><span class="dot" style="background:var(--green)"></span>Tesla</span>
+      <span><span class="dot" style="background:var(--amber)"></span>HBL</span>
+      <span><span class="dot" style="background:var(--violet)"></span>Meezan Bank</span>
+    </div>
+    <div class="chart-box">
+      <canvas id="lineChart" role="img" aria-label="Line chart of cumulative return for Apple, Tesla, HBL, and Meezan Bank from July 2025 to July 2026">Apple ends at 45.1%, Tesla at 24.8%, HBL at 77.2%, Meezan Bank at 67.6%.</canvas>
+    </div>
+  </div>
+
+  <div class="panel card">
+    <p class="panel-title">One-year return comparison</p>
+    <div class="chart-box short">
+      <canvas id="barChart" role="img" aria-label="Bar chart comparing 1 year returns: Apple 45.1%, Tesla 24.8%, HBL 77.2%, Meezan Bank 67.6%">Apple 45.1%, Tesla 24.8%, HBL 77.2%, Meezan Bank 67.6%.</canvas>
+    </div>
+  </div>
+
+  <div class="panel card insights">
+    <p class="panel-title">Key insights</p>
+    <ul>
+      <li>HBL delivered the highest return, but with above-average volatility to match.</li>
+      <li>Apple had the steadiest ride: a solid return with the lowest volatility of the four.</li>
+      <li>Tesla is the only stock trending downward on a 20 vs 50-day moving average basis as of the data date above.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Data source: Yahoo Finance (via the <code>yfinance</code> Python library).<br><br>
+    This dashboard was developed for educational purposes to demonstrate financial data analysis and visualization using Python and HTML. It does not provide investment advice.
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  // ---------------------------------------------------------------
+  // DATA BLOCK — replace these arrays after re-running stock_dashboard.py
+  // to refresh the dashboard with new numbers. See README.md.
+  // ---------------------------------------------------------------
+  const dates  = ["Jul","Jul","Aug","Aug","Sep","Oct","Oct","Nov","Dec","Dec","Jan","Jan","Feb","Mar","Mar","Apr","May","May","Jun","Jul"];
+  const apple  = [0, 0.3, 6.5, 9.0, 11.5, 20.2, 23.2, 28.3, 34.3, 28.4, 22.1, 21.8, 22.4, 22.5, 16.9, 23.7, 35.0, 45.0, 36.9, 45.1];
+  const tesla  = [0, 5.5, 7.5, 9.7, 32.2, 37.3, 37.5, 36.5, 36.1, 52.6, 42.4, 36.5, 30.6, 26.6, 14.7, 23.3, 26.4, 37.5, 28.9, 24.8];
+  const hbl    = [0, 27.3, 45.0, 39.8, 40.5, 66.0, 66.1, 55.5, 71.1, 75.6, 98.2, 87.0, 79.4, 59.4, 38.1, 73.7, 71.8, 67.2, 71.6, 77.2];
+  const meezan = [0, 1.4, 7.6, 13.2, 19.4, 30.4, 27.1, 24.1, 28.1, 29.2, 38.6, 40.3, 40.7, 36.1, 31.5, 47.0, 50.2, 48.7, 55.2, 67.6];
+  // ---------------------------------------------------------------
+
+  const muted = "#9497a6";
+  const grid = "#2a2c36";
+
+  new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [
+        { label: 'Apple', data: apple, borderColor: '#4a9eff', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Tesla', data: tesla, borderColor: '#34c98f', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.3, borderDash: [4,2] },
+        { label: 'HBL', data: hbl, borderColor: '#f5a623', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+        { label: 'Meezan Bank', data: meezan, borderColor: '#9b7ef0', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.3, borderDash: [4,2] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: muted, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+        y: { grid: { color: grid }, ticks: { color: muted, callback: (v) => v + '%' } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Apple', 'Tesla', 'HBL', 'Meezan Bank'],
+      datasets: [{
+        data: [45.1, 24.8, 77.2, 67.6],
+        backgroundColor: ['#4a9eff', '#34c98f', '#f5a623', '#9b7ef0'],
+        borderRadius: 4,
+        maxBarThickness: 48
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: muted } },
+        y: { grid: { color: grid }, ticks: { color: muted, callback: (v) => v + '%' } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
